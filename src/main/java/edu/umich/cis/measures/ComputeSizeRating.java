@@ -17,36 +17,41 @@
  * along with this program; if not, write to the Free Software Foundation,
  * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
  */
-package org.sonarsource.plugins.example.measures;
+package edu.umich.cis.measures;
 
-import org.sonar.api.ce.measure.Component;
 import org.sonar.api.ce.measure.Measure;
 import org.sonar.api.ce.measure.MeasureComputer;
 
-import static org.sonarsource.plugins.example.measures.ExampleMetrics.FILENAME_SIZE;
+import static edu.umich.cis.measures.ExampleMetrics.FILENAME_SIZE;
+import static edu.umich.cis.measures.ExampleMetrics.FILENAME_SIZE_RATING;
 
-public class ComputeSizeAverage implements MeasureComputer {
+/**
+ * Rating is computed from value of metric {@link ExampleMetrics#FILENAME_SIZE}.
+ */
+public class ComputeSizeRating implements MeasureComputer {
+
+  private static final int THRESHOLD = 20;
+  private static final int RATING_A = 1;
+  private static final int RATING_B = 2;
 
   @Override
   public MeasureComputerDefinition define(MeasureComputerDefinitionContext def) {
     return def.newDefinitionBuilder()
-      .setOutputMetrics(FILENAME_SIZE.key())
+      .setInputMetrics(FILENAME_SIZE.key())
+      .setOutputMetrics(FILENAME_SIZE_RATING.key())
       .build();
   }
 
   @Override
   public void compute(MeasureComputerContext context) {
-    // measure is already defined on files by {@link SetSizeOnFilesSensor}
-    // in scanner stack
-    if (context.getComponent().getType() != Component.Type.FILE) {
-      int sum = 0;
-      int count = 0;
-      for (Measure child : context.getChildrenMeasures(FILENAME_SIZE.key())) {
-        sum += child.getIntValue();
-        count++;
+    Measure size = context.getMeasure(FILENAME_SIZE.key());
+    if (size != null) {
+      // rating values are currently implemented as integers in API
+      int rating = RATING_A;
+      if (size.getIntValue() > THRESHOLD) {
+        rating = RATING_B;
       }
-      int average = count == 0 ? 0 : sum / count;
-      context.addMeasure(FILENAME_SIZE.key(), average);
+      context.addMeasure(FILENAME_SIZE_RATING.key(), rating);
     }
   }
 }

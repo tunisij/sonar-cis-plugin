@@ -1,11 +1,11 @@
-package org.sonarsource.plugins.example.web;
+package edu.umich.cis.web;
 
 import org.sonar.api.web.page.Context;
 import org.sonar.api.web.page.Page;
 import org.sonar.api.web.page.Page.Scope;
 import org.sonar.api.web.page.PageDefinition;
 
-public class MyPluginPageDefinition implements PageDefinition {
+  public class MyPluginPageDefinition implements PageDefinition {
 
   @Override
   public void define(Context context) {

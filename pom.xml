@@ -2,13 +2,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>org.sonarsource.plugins.example</groupId>
-  <artifactId>sonar-example-plugin</artifactId>
+  <groupId>edu.umich</groupId>
+  <artifactId>sonar-cis-plugin</artifactId>
   <packaging>sonar-plugin</packaging>
   <version>6.7.1</version>
 
-  <name>Example Plugin for SonarQube 6.7.x LTS</name>
-  <description>Example of Plugin for SonarQube: Foo Language, FooLint, Custom Metrics and MeasureComputers</description>
+  <name>Sonar CIS Plugin</name>
+  <description>Sonar Plugin for CIS580</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -56,7 +56,7 @@
         <extensions>true</extensions>
         <configuration>
           <pluginKey>example</pluginKey>
-          <pluginClass>org.sonarsource.plugins.example.ExamplePlugin</pluginClass>
+          <pluginClass>edu.umich.cis.MyPlugin</pluginClass>
         </configuration>
       </plugin>
       <plugin>
