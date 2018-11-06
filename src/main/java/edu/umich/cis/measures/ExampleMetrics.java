@@ -42,8 +42,15 @@ public class ExampleMetrics implements Metrics {
     .setDomain(CoreMetrics.DOMAIN_GENERAL)
     .create();
 
+  public static final Metric<Integer> TEST_PROJECT_SIZE = new Metric.Builder("test_project_size", "Project Size", Metric.ValueType.INT)
+    .setDescription("Project size")
+    .setDirection(Metric.DIRECTION_BETTER)
+    .setQualitative(true)
+    .setDomain(CoreMetrics.DOMAIN_GENERAL)
+    .create();
+
   @Override
   public List<Metric> getMetrics() {
-    return asList(FILENAME_SIZE, FILENAME_SIZE_RATING);
+    return asList(FILENAME_SIZE, FILENAME_SIZE_RATING, TEST_PROJECT_SIZE);
   }
 }

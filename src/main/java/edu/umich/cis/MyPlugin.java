@@ -19,12 +19,7 @@
  */
 package edu.umich.cis;
 
-import edu.umich.cis.measures.ComputeSizeAverage;
-import edu.umich.cis.measures.ComputeSizeRating;
-import edu.umich.cis.measures.ExampleMetrics;
-import edu.umich.cis.measures.SetSizeOnFilesSensor;
-import edu.umich.cis.rules.CreateIssuesOnJavaFilesSensor;
-import edu.umich.cis.rules.JavaRulesDefinition;
+import edu.umich.cis.measures.*;
 import edu.umich.cis.web.MyPluginPageDefinition;
 import org.sonar.api.Plugin;
 import org.sonar.api.config.PropertyDefinition;
@@ -40,10 +35,7 @@ public class MyPlugin implements Plugin {
   public void define(Context context) {
     // tutorial on measures
     context
-      .addExtensions(ExampleMetrics.class, SetSizeOnFilesSensor.class, ComputeSizeAverage.class, ComputeSizeRating.class);
-
-    // tutorial on rules
-    context.addExtensions(JavaRulesDefinition.class, CreateIssuesOnJavaFilesSensor.class);
+      .addExtensions(ExampleMetrics.class, SetSizeOnFilesSensor.class, ComputeSizeAverage.class, ComputeSizeRating.class, TestMeasure.class);
 
     // tutorial on web extensions
     context.addExtension(MyPluginPageDefinition.class);
