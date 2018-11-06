@@ -22,9 +22,6 @@ package edu.umich.cis;
 import edu.umich.cis.measures.*;
 import edu.umich.cis.web.MyPluginPageDefinition;
 import org.sonar.api.Plugin;
-import org.sonar.api.config.PropertyDefinition;
-
-import static java.util.Arrays.asList;
 
 /**
  * This class is the entry point for all extensions. It is referenced in pom.xml.
@@ -39,13 +36,5 @@ public class MyPlugin implements Plugin {
 
     // tutorial on web extensions
     context.addExtension(MyPluginPageDefinition.class);
-
-    context.addExtensions(asList(
-      PropertyDefinition.builder("sonar.foo.file.suffixes")
-        .name("Suffixes FooLint")
-        .description("Suffixes supported by FooLint")
-        .category("FooLint")
-        .defaultValue("")
-        .build()));
   }
 }
