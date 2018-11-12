@@ -42,8 +42,23 @@ public class ExampleMetrics implements Metrics {
     .setDomain(CoreMetrics.DOMAIN_GENERAL)
     .create();
 
+  public static final Metric<Integer> FILE_ID = new Metric.Builder("file_id", "File Id", Metric.ValueType.INT)
+    .setDescription("Id for database")
+    .setDirection(Metric.DIRECTION_NONE)
+    .setQualitative(false)
+    .setHidden(true)
+    .setDomain(CoreMetrics.DOMAIN_COMPLEXITY)
+    .create();
+
+  public static final Metric<Integer> COMPLEXITY_DELTA = new Metric.Builder("complexity_delta", "Complexity Delta", Metric.ValueType.INT)
+    .setDescription("Complexity change since last scan")
+    .setDirection(Metric.DIRECTION_WORST)
+    .setQualitative(false)
+    .setDomain(CoreMetrics.DOMAIN_COMPLEXITY)
+    .create();
+
   @Override
   public List<Metric> getMetrics() {
-    return asList(FILENAME_SIZE, FILENAME_SIZE_RATING);
+    return asList(FILENAME_SIZE, FILENAME_SIZE_RATING, FILE_ID, COMPLEXITY_DELTA);
   }
 }
