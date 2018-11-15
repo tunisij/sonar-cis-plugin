@@ -1,4 +1,4 @@
-package edu.umich.cis.measures;
+package edu.umich.cis;
 
 public class JdbcConnection {
     public static String url = "jdbc:mysql://localhost:3306/sonarqube";

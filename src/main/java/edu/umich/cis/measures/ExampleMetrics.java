@@ -19,10 +19,11 @@
  */
 package edu.umich.cis.measures;
 
-import java.util.List;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
 import org.sonar.api.measures.Metrics;
+
+import java.util.List;
 
 import static java.util.Arrays.asList;
 
@@ -57,8 +58,15 @@ public class ExampleMetrics implements Metrics {
     .setDomain(CoreMetrics.DOMAIN_COMPLEXITY)
     .create();
 
+  public static final Metric<Integer> CHANGE_FREQUENCY = new Metric.Builder("change_frequency", "Change Frequency", Metric.ValueType.INT)
+    .setDescription("Number of changes made to each file")
+    .setDirection(Metric.DIRECTION_WORST)
+    .setQualitative(false)
+    .setDomain(CoreMetrics.DOMAIN_GENERAL)
+    .create();
+
   @Override
   public List<Metric> getMetrics() {
-    return asList(FILENAME_SIZE, FILENAME_SIZE_RATING, FILE_ID, COMPLEXITY_DELTA);
+    return asList(FILENAME_SIZE, FILENAME_SIZE_RATING, FILE_ID, COMPLEXITY_DELTA, CHANGE_FREQUENCY);
   }
 }

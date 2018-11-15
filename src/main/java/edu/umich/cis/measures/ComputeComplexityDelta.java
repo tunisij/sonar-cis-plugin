@@ -1,5 +1,6 @@
 package edu.umich.cis.measures;
 
+import edu.umich.cis.JdbcConnection;
 import edu.umich.cis.objects.Complexity;
 import org.sonar.api.ce.measure.Component;
 import org.sonar.api.ce.measure.Measure;

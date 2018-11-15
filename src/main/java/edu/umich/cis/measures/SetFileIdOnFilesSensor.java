@@ -1,5 +1,6 @@
 package edu.umich.cis.measures;
 
+import edu.umich.cis.JdbcConnection;
 import org.sonar.api.batch.fs.FileSystem;
 import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.batch.sensor.Sensor;

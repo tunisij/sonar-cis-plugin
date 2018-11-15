@@ -32,7 +32,9 @@ public class MyPlugin implements Plugin {
   public void define(Context context) {
     // tutorial on measures
     context
-      .addExtensions(ExampleMetrics.class, SetSizeOnFilesSensor.class, ComputeSizeAverage.class, ComputeSizeRating.class, ComputeComplexityDelta.class, SetFileIdOnFilesSensor.class);
+      .addExtensions(ExampleMetrics.class, SetSizeOnFilesSensor.class, ComputeSizeAverage.class, ComputeSizeRating.class,
+              ComputeComplexityDelta.class, SetFileIdOnFilesSensor.class,
+              ComputeChangeFrequency.class);
 
     // tutorial on web extensions
     context.addExtension(MyPluginPageDefinition.class);
