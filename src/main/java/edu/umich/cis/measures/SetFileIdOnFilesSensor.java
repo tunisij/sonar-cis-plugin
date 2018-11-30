@@ -45,7 +45,7 @@ public class SetFileIdOnFilesSensor implements Sensor {
                 preparedStatement.setString(1, filename);
                 preparedStatement.execute();
 
-                ResultSet newRs = selectStatement.executeQuery(selectByFilename);
+                ResultSet newRs = preparedStatement.executeQuery();
 
                 if (newRs.next()) {
                     return rs.getInt("id");
