@@ -50,13 +50,14 @@ public class ComputeComplexityDelta implements MeasureComputer {
         String previousComplexityQuery = "select sum(c1.complexity) from ( " +
                 " select id, max(timestamp) as maxTime " +
                 "    from complexity " +
-                "    where timestamp not in (select max(timestamp) from complexity group by id) " +
+                "    where timestamp not in (select max(timestamp) and id != 0 from complexity group by id) " +
                 "    group by id " +
                 ") c2 " +
                 "inner join complexity c1 on c1.id = c2.id and c1.timestamp = c2.maxTime ";
         String currentComplexityQuery = "select sum(c1.complexity) from ( " +
                 " select id, max(timestamp) as maxTime " +
                 "    from complexity " +
+                "    where id != 0 " +
                 "    group by id " +
                 ") c2 " +
                 "inner join complexity c1 on c1.id = c2.id and c1.timestamp = c2.maxTime ";
@@ -80,6 +81,7 @@ public class ComputeComplexityDelta implements MeasureComputer {
                 currentComplexity = currentRs.getInt(1);
             }
 
+            connection.close();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -96,6 +98,8 @@ public class ComputeComplexityDelta implements MeasureComputer {
             preparedStatement.setInt(1, fileId);
             preparedStatement.setInt(2, filename);
             preparedStatement.execute();
+            connection.commit();
+            connection.close();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
@@ -118,6 +122,7 @@ public class ComputeComplexityDelta implements MeasureComputer {
                 complexity.setLocalDateTime(rs.getTimestamp("timestamp").toLocalDateTime());
                 complexities.add(complexity);
             }
+            connection.close();
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }

@@ -29,7 +29,11 @@ public class SetFileIdOnFilesSensor implements Sensor {
 
     private Integer getDbFileId(String filename) {
         String selectByFilename = "select * from file where filename = ? ";
+        String selectMaxId = "select max(id) id from file ";
         String insertFileId = "insert into file (filename) values (?) ";
+        int id = 0;
+        filename.trim();
+        boolean doInsert = false;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -39,21 +43,33 @@ public class SetFileIdOnFilesSensor implements Sensor {
             ResultSet rs = selectStatement.executeQuery();
 
             if (rs.next()) {
-                return rs.getInt("id");
+                id = rs.getInt("id");
+
+                if (id == 0) {
+                    doInsert = true;
+                }
             } else {
+                doInsert = true;
+            }
+
+            if (doInsert) {
+                PreparedStatement selectMaxIdPS = connection.prepareStatement(selectMaxId);
+                ResultSet rsMax = selectMaxIdPS.executeQuery();
+
+                if (rsMax.next()) {
+                    id = rsMax.getInt("id") + 1;
+                }
+
                 PreparedStatement preparedStatement = connection.prepareStatement(insertFileId);
                 preparedStatement.setString(1, filename);
-                preparedStatement.execute();
-
-                ResultSet newRs = preparedStatement.executeQuery();
-
-                if (newRs.next()) {
-                    return rs.getInt("id");
-                }
+                preparedStatement.executeUpdate();
             }
+
+            connection.close();
+            return id;
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
-        return 0;
+        return id;
     }
 }

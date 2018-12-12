@@ -30,43 +30,50 @@ import static java.util.Arrays.asList;
 public class ExampleMetrics implements Metrics {
 
   public static final Metric<Integer> FILENAME_SIZE = new Metric.Builder("filename_size", "Filename Size", Metric.ValueType.INT)
-    .setDescription("Number of characters of file names")
-    .setDirection(Metric.DIRECTION_BETTER)
-    .setQualitative(false)
-    .setDomain(CoreMetrics.DOMAIN_GENERAL)
-    .create();
+          .setDescription("Number of characters of file names")
+          .setDirection(Metric.DIRECTION_BETTER)
+          .setQualitative(false)
+          .setDomain(CoreMetrics.DOMAIN_GENERAL)
+          .create();
 
   public static final Metric<Integer> FILENAME_SIZE_RATING = new Metric.Builder("filename_size_rating", "Filename Size Rating", Metric.ValueType.RATING)
-    .setDescription("Rating based on size of file names")
-    .setDirection(Metric.DIRECTION_BETTER)
-    .setQualitative(true)
-    .setDomain(CoreMetrics.DOMAIN_GENERAL)
-    .create();
+          .setDescription("Rating based on size of file names")
+          .setDirection(Metric.DIRECTION_BETTER)
+          .setQualitative(true)
+          .setDomain(CoreMetrics.DOMAIN_GENERAL)
+          .create();
 
   public static final Metric<Integer> FILE_ID = new Metric.Builder("file_id", "File Id", Metric.ValueType.INT)
-    .setDescription("Id for database")
-    .setDirection(Metric.DIRECTION_NONE)
-    .setQualitative(false)
-    .setHidden(true)
-    .setDomain(CoreMetrics.DOMAIN_COMPLEXITY)
-    .create();
+          .setDescription("Id for database")
+          .setDirection(Metric.DIRECTION_NONE)
+          .setQualitative(false)
+          .setHidden(true)
+          .setDomain(CoreMetrics.DOMAIN_COMPLEXITY)
+          .create();
 
   public static final Metric<Integer> COMPLEXITY_DELTA = new Metric.Builder("complexity_delta", "Complexity Delta", Metric.ValueType.INT)
-    .setDescription("Complexity change since last scan")
-    .setDirection(Metric.DIRECTION_WORST)
-    .setQualitative(false)
-    .setDomain(CoreMetrics.DOMAIN_COMPLEXITY)
-    .create();
+          .setDescription("Complexity change since last scan")
+          .setDirection(Metric.DIRECTION_WORST)
+          .setQualitative(false)
+          .setDomain(CoreMetrics.DOMAIN_COMPLEXITY)
+          .create();
 
   public static final Metric<Integer> CHANGE_FREQUENCY = new Metric.Builder("change_frequency", "Change Frequency", Metric.ValueType.INT)
-    .setDescription("Number of changes made to each file")
-    .setDirection(Metric.DIRECTION_WORST)
-    .setQualitative(false)
-    .setDomain(CoreMetrics.DOMAIN_GENERAL)
-    .create();
+          .setDescription("Number of changes made to each file")
+          .setDirection(Metric.DIRECTION_WORST)
+          .setQualitative(false)
+          .setDomain(CoreMetrics.DOMAIN_GENERAL)
+          .create();
+
+  public static final Metric<Double> CHANGE_MAINTAINABILITY = new Metric.Builder("change_maintainability", "Maintainability Delta", Metric.ValueType.PERCENT)
+          .setDescription("Differences between old sqale debt ratio and new sqale debt ratio of each file")
+          .setDomain(CoreMetrics.DOMAIN_MAINTAINABILITY)
+          .setDirection(Metric.DIRECTION_WORST)
+          .setQualitative(false)
+          .create();
 
   @Override
   public List<Metric> getMetrics() {
-    return asList(FILENAME_SIZE, FILENAME_SIZE_RATING, FILE_ID, COMPLEXITY_DELTA, CHANGE_FREQUENCY);
+    return asList(FILENAME_SIZE, FILENAME_SIZE_RATING, FILE_ID, COMPLEXITY_DELTA, CHANGE_FREQUENCY, CHANGE_MAINTAINABILITY);
   }
 }
