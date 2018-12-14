@@ -26,14 +26,14 @@ public class ComputeChangeFrequency implements MeasureComputer {
 
     @Override
     public void compute(MeasureComputerContext context) {
-        Measure newLines = context.getMeasure(CoreMetrics.NCLOC_KEY);
+        Measure nonCommentLOC = context.getMeasure(CoreMetrics.NCLOC_KEY);
         Measure newSqaleRating = context.getMeasure(CoreMetrics.SQALE_RATING_KEY); 			// Read the sqale rating.
         Measure newSqaleDebtRatio = context.getMeasure(CoreMetrics.SQALE_DEBT_RATIO_KEY); 	// Read the sqal debt ratio.
         Double changes = 0.0;
         if (context.getComponent().getType() == Component.Type.FILE) {
-            if (newLines != null && newLines.getIntValue() > 0) {
-                Integer fileId = context.getMeasure(ExampleMetrics.FILE_ID.key()).getIntValue();
-                Integer changeFrequency = incrementChangeFrequencyCounter(fileId, newLines.getIntValue());
+            if (nonCommentLOC != null && nonCommentLOC.getIntValue() > 0) {
+                int fileId = context.getMeasure(ExampleMetrics.FILE_ID.key()).getIntValue();
+                int changeFrequency = incrementChangeFrequencyCounter(fileId, nonCommentLOC.getIntValue());
                 if (newSqaleRating != null && newSqaleDebtRatio != null) {
 
                     // Save sqale rating & sqale debt ratio to DB and calculates the changes between the old sqale debt ration and the new one.
@@ -70,7 +70,6 @@ public class ComputeChangeFrequency implements MeasureComputer {
                 preparedStatement.setDouble(5, newSqaleDebtRatio); // set the sqale debt ratio.
                 preparedStatement.setDouble(6, 0);					// set the changes of sqale debt ratio as 0 because this is the first scan of the project(empty database).
                 preparedStatement.executeUpdate();
-                connection.commit();
                 connection.close();
                 return 0.0;
             } else {			// if the specified file is found in the database, update.
@@ -85,7 +84,6 @@ public class ComputeChangeFrequency implements MeasureComputer {
                 preparedStatement.setDouble(4, newSqaleDebtRatio);
                 preparedStatement.setDouble(5, changeSqaleDebtRatio);
                 preparedStatement.executeUpdate();
-                connection.commit();
                 connection.close();
                 return changeSqaleDebtRatio;
             }
@@ -97,12 +95,12 @@ public class ComputeChangeFrequency implements MeasureComputer {
         return 0.0;
     }
 
-    private Integer incrementChangeFrequencyCounter(Integer fileId, Integer ncloc) {
+    private Integer incrementChangeFrequencyCounter(int fileId, int ncloc) {
         String selectChangeFrequency = "select * from change_frequency where id = ? ";
         String insertChangeFrequency = "insert into change_frequency (id, change_frequency, last_loc_count) values (?, ?, ?) ";
         String updateChangeFrequency = "update change_frequency set change_frequency = ?, last_loc_count = ? where id = ?";
-        Integer changeFrequency = 0;
-        Integer lastLocCount = 0;
+        int changeFrequency = 0;
+        int lastLocCount = 0;
 
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -128,13 +126,11 @@ public class ComputeChangeFrequency implements MeasureComputer {
                     preparedStatement.executeUpdate();
                 } else {
                     PreparedStatement preparedStatement = connection.prepareStatement(updateChangeFrequency);
-                    preparedStatement.setInt(1, fileId);
-                    preparedStatement.setInt(2, changeFrequency);
-                    preparedStatement.setInt(3, ncloc);
-                    preparedStatement.executeUpdate();
                     preparedStatement.setInt(1, changeFrequency);
+                    preparedStatement.setInt(2, ncloc);
+                    preparedStatement.setInt(3, fileId);
+                    preparedStatement.executeUpdate();
                 }
-                connection.commit();
             }
             connection.close();
         } catch (SQLException | ClassNotFoundException e) {
